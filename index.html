@@ -1,86 +1,161 @@
-<button class="close" onclick="closeVote()">×</button>
+ 2026 Bé Yêu Của Mẹ
+</footer>
 
-<h2>Xác nhận bình chọn</h2>
-<p id="candidateLabel"></p>
+<!-- CỬA SỔ BÌNH CHỌN -->
 
-<!-- BƯỚC 1 -->
+<div class="overlay" id="overlay">
+  <div class="modal">
 
-<div id="step1">
-  <h3>Bước 1: Thông tin người bình chọn</h3>
+    <button class="close" onclick="closeVote()">×</button>
 
-  <form id="infoForm">
+    <h2>Xác nhận bình chọn</h2>
+    <p id="candidateLabel"></p>
 
-    <label for="facebook">Tên Facebook</label>
-    <input
-      id="facebook"
-      type="text"
-      placeholder="Nhập tên Facebook"
-      maxlength="100"
-      required
-    >
+    <!-- BƯỚC 1 -->
 
-    <label for="phone">Số điện thoại</label>
-    <input
-      id="phone"
-      type="tel"
-      inputmode="numeric"
-      placeholder="Nhập số điện thoại"
-      pattern="0[0-9]{9}"
-      maxlength="10"
-      required
-    >
+    <div id="step1">
+      <h3>Bước 1: Thông tin người bình chọn</h3>
 
-    <p class="note">
-      Vui lòng nhập số điện thoại sử dụng Zalo
-      để nhận mã từ ban tổ chức.
-    </p>
+      <form id="infoForm">
 
-    <button class="next-btn" type="submit">
-      Tiếp tục →
-    </button>
+        <label for="facebook">Tên Facebook</label>
+        <input
+          id="facebook"
+          type="text"
+          placeholder="Nhập tên Facebook"
+          maxlength="100"
+          required
+        >
 
-  </form>
+        <label for="phone">Số điện thoại</label>
+        <input
+          id="phone"
+          type="tel"
+          inputmode="numeric"
+          placeholder="Nhập số điện thoại"
+          pattern="0[0-9]{9}"
+          maxlength="10"
+          required
+        >
+
+        <p class="note">
+          Vui lòng nhập số điện thoại sử dụng Zalo
+          để nhận mã từ ban tổ chức.
+        </p>
+
+        <button class="next-btn" type="submit">
+          Tiếp tục →
+        </button>
+
+      </form>
+    </div>
+
+    <!-- BƯỚC 2 -->
+
+    <div id="step2" style="display:none">
+
+      <h3>Bước 2: Nhập mã xác nhận</h3>
+
+      <p class="note">
+        Nhập mã 6 số do ban tổ chức gửi qua Zalo.
+      </p>
+
+      <form id="codeForm">
+
+        <label for="voteCode">Mã xác nhận 6 số</label>
+        <input
+          id="voteCode"
+          type="text"
+          inputmode="numeric"
+          maxlength="6"
+          pattern="[0-9]{6}"
+          placeholder="Nhập mã 6 số"
+          required
+        >
+
+        <div id="error" role="alert"></div>
+
+        <button class="next-btn" type="submit">
+          Xác nhận bình chọn
+        </button>
+
+      </form>
+
+      <button class="back-btn" onclick="goBack()">
+        ← Quay lại
+      </button>
+
+      <p class="note">
+        Chức năng kiểm tra mã và lưu phiếu
+        sẽ được kích hoạt sau khi kết nối
+        cơ sở dữ liệu.
+      </p>
+
+    </div>
+
+  </div>
 </div>
 
-<!-- BƯỚC 2 -->
+<script>
+let selectedCandidate = null;
 
-<div id="step2" style="display:none">
+function openVote(number) {
+  selectedCandidate = number;
 
-  <h3>Bước 2: Nhập mã xác nhận</h3>
+  document.getElementById("candidateLabel").textContent =
+    "Bạn đang bình chọn cho thí sinh số " +
+    String(number).padStart(2, "0");
 
-  <p class="note">
-    Nhập mã 6 số do ban tổ chức gửi qua Zalo.
-  </p>
+  document.getElementById("infoForm").reset();
+  document.getElementById("codeForm").reset();
 
-  <form id="codeForm">
+  document.getElementById("error").style.display = "none";
 
-    <label for="voteCode">Mã xác nhận 6 số</label>
-    <input
-      id="voteCode"
-      type="text"
-      inputmode="numeric"
-      maxlength="6"
-      pattern="[0-9]{6}"
-      placeholder="Nhập mã 6 số"
-      required
-    >
+  document.getElementById("step1").style.display = "block";
+  document.getElementById("step2").style.display = "none";
 
-    <div id="error" role="alert"></div>
+  document.getElementById("overlay").style.display = "flex";
+}
 
-    <button class="next-btn" type="submit">
-      Xác nhận bình chọn
-    </button>
+function closeVote() {
+  document.getElementById("overlay").style.display = "none";
+}
 
-  </form>
+function goBack() {
+  document.getElementById("step1").style.display = "block";
+  document.getElementById("step2").style.display = "none";
+}
 
-  <button class="back-btn" onclick="goBack()">
-    ← Quay lại
-  </button>
+document.getElementById("infoForm")
+  .addEventListener("submit", function(event) {
+    event.preventDefault();
 
-  <p class="note">
-    Chức năng kiểm tra mã và lưu phiếu
-    sẽ được kích hoạt sau khi kết nối
-    cơ sở dữ liệu.
-  </p>
+    if (!this.reportValidity()) return;
 
-</div>
+    document.getElementById("step1").style.display = "none";
+    document.getElementById("step2").style.display = "block";
+  });
+
+document.getElementById("voteCode")
+  .addEventListener("input", function() {
+    this.value = this.value.replace(/\D/g, "").slice(0, 6);
+  });
+
+document.getElementById("codeForm")
+  .addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    if (!this.reportValidity()) return;
+
+    const error = document.getElementById("error");
+
+    error.textContent =
+      "Website chưa kết nối hệ thống kiểm tra mã. " +
+      "Phiếu bình chọn chưa được ghi nhận.";
+
+    error.style.display = "block";
+  });
+</script>
+
+</body>
+</html>
