@@ -1,82 +1,86 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bình chọn Bé Yêu Của Mẹ 2026</title>
-<style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f7f5fc;color:#27304b}
-header{background:linear-gradient(135deg,#714cc4,#ec8bb7);color:white;text-align:center;padding:55px 18px}
-header h1{font-size:34px;margin:12px 0}
-header p{line-height:1.6}
-main{max-width:1050px;margin:35px auto;padding:0 18px}
-h2{text-align:center;margin-bottom:28px}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
-.card{background:white;border-radius:18px;overflow:hidden;text-align:center;box-shadow:0 5px 22px #00000012;padding-bottom:22px}
-.photo{width:100%;aspect-ratio:4/5;object-fit:cover;background:#eee8f7}
-.card h3{margin:18px 0 8px}
-.card p{color:#64748b}
-button{background:#8757ce;color:white;border:0;border-radius:10px;padding:13px 30px;font-size:16px;cursor:pointer}
-button:hover{background:#6a39b6}
-footer{text-align:center;padding:35px;color:#64748b}
-@media(max-width:520px){
-.grid{gap:12px}
-.card h3{font-size:15px}
-button{padding:11px 15px;font-size:14px}
-header h1{font-size:26px}
-}
-</style>
-</head>
-<body>
-<header>
-<p>CUỘC THI NĂM 2026</p>
-<h1>BÉ YÊU CỦA MẸ</h1>
-<p>Bình chọn cho thí sinh bạn yêu thích nhất</p>
-</header>
+<button class="close" onclick="closeVote()">×</button>
 
-<main>
-<h2>DANH SÁCH 4 THÍ SINH</h2>
-<div class="grid">
+<h2>Xác nhận bình chọn</h2>
+<p id="candidateLabel"></p>
 
-<div class="card">
-<img class="photo" src="thisinh01.jpg" alt="Thí sinh 01">
-<h3>Thí sinh số 01</h3>
-<p>Số báo danh: 01</p>
-<button onclick="binhChon(1)">Bình chọn</button>
+<!-- BƯỚC 1 -->
+
+<div id="step1">
+  <h3>Bước 1: Thông tin người bình chọn</h3>
+
+  <form id="infoForm">
+
+    <label for="facebook">Tên Facebook</label>
+    <input
+      id="facebook"
+      type="text"
+      placeholder="Nhập tên Facebook"
+      maxlength="100"
+      required
+    >
+
+    <label for="phone">Số điện thoại</label>
+    <input
+      id="phone"
+      type="tel"
+      inputmode="numeric"
+      placeholder="Nhập số điện thoại"
+      pattern="0[0-9]{9}"
+      maxlength="10"
+      required
+    >
+
+    <p class="note">
+      Vui lòng nhập số điện thoại sử dụng Zalo
+      để nhận mã từ ban tổ chức.
+    </p>
+
+    <button class="next-btn" type="submit">
+      Tiếp tục →
+    </button>
+
+  </form>
 </div>
 
-<div class="card">
-<img class="photo" src="thisinh02.jpg" alt="Thí sinh 02">
-<h3>Thí sinh số 02</h3>
-<p>Số báo danh: 02</p>
-<button onclick="binhChon(2)">Bình chọn</button>
+<!-- BƯỚC 2 -->
+
+<div id="step2" style="display:none">
+
+  <h3>Bước 2: Nhập mã xác nhận</h3>
+
+  <p class="note">
+    Nhập mã 6 số do ban tổ chức gửi qua Zalo.
+  </p>
+
+  <form id="codeForm">
+
+    <label for="voteCode">Mã xác nhận 6 số</label>
+    <input
+      id="voteCode"
+      type="text"
+      inputmode="numeric"
+      maxlength="6"
+      pattern="[0-9]{6}"
+      placeholder="Nhập mã 6 số"
+      required
+    >
+
+    <div id="error" role="alert"></div>
+
+    <button class="next-btn" type="submit">
+      Xác nhận bình chọn
+    </button>
+
+  </form>
+
+  <button class="back-btn" onclick="goBack()">
+    ← Quay lại
+  </button>
+
+  <p class="note">
+    Chức năng kiểm tra mã và lưu phiếu
+    sẽ được kích hoạt sau khi kết nối
+    cơ sở dữ liệu.
+  </p>
+
 </div>
-
-<div class="card">
-<img class="photo" src="thisinh03.jpg" alt="Thí sinh 03">
-<h3>Thí sinh số 03</h3>
-<p>Số báo danh: 03</p>
-<button onclick="binhChon(3)">Bình chọn</button>
-</div>
-
-<div class="card">
-<img class="photo" src="thisinh04.jpg" alt="Thí sinh 04">
-<h3>Thí sinh số 04</h3>
-<p>Số báo danh: 04</p>
-<button onclick="binhChon(4)">Bình chọn</button>
-</div>
-
-</div>
-</main>
-
-<footer>Cuộc thi Bé Yêu Của Mẹ 2026</footer>
-
-<script>
-function binhChon(soBaoDanh){
-alert("Bạn đã chọn thí sinh số " + soBaoDanh +
-". Đây là bản thử nghiệm, phiếu chưa được ghi nhận.");
-}
-</script>
-</body>
-</html>
